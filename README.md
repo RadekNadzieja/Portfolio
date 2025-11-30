@@ -144,3 +144,90 @@ static class PerfectRoomDisplayService
     }
 ```
 Starting with SpawnPerfectRoom() - after the method is invoked by the ViewModel, specific prefab is assigned from config based on levelId. Prefab is then instantiated. After this the ZoomSwitch() is called via input system - the object moves to another position and it stays there as long as the button remains pressed.
+## Personal Projects
+
+This is an example of the code from an older project of mine (less cleaner code).
+
+Constructor of the class that holds parameters and contains other methods for various calculations:
+
+```
+...
+public HexSlot(int _q, int _r, GameObject _prefab, GameObject _decoPrefab, MapGeneratorSettings mapSettings)
+    {
+        q = _q;
+        r = _r;
+        float x = 3f / 2 * _q;
+        float z = Mathf.Sqrt(3) / 2 * _q + Mathf.Sqrt(3) * _r;
+        worldPoint = Vector3.right * x + Vector3.up * 1 + Vector3.forward * z;
+        CalculateHeight(mapSettings);
+        if (_prefab != null)
+        {
+            prefab = _prefab;
+        }
+        else
+        {
+            prefab = Resources.Load<GameObject>("hexagon");
+        }
+        if (_decoPrefab != null)
+        {
+            decoPrefab = _decoPrefab;
+        }
+    }
+...
+```
+Calculates position of the hexagonal object to fit in the hex grid like pattern. Also calculates Y-position based on the generator settings (Perlin noise, octaves, etc.)
+
+Results of project the code is used in:
+
+![map_big](https://github.com/RadekNadzieja/Portfolio/blob/main/map_big.jpg)
+
+![map2](https://github.com/RadekNadzieja/Portfolio/blob/main/map2.jpg)
+
+Next is still WIP project which also acts as an engineering thesis project for the college.
+
+Firstly, method that finds two closest positions (of the biomes) which are later used for Voronoi Diagram:
+
+```
+...
+private (int firstBiome, int secondBiome) GetClosestBiomes(Vector3 position)
+    {
+        Vector3 flatPosition = new Vector3(position.x, 0, position.z);
+        int closestBiome = 0;
+        int secondClosestBiome = 0;
+        float closestDistance = Mathf.Infinity;
+        float secondClosestDistance = Mathf.Infinity;
+
+        Vector3 directionToTargetBiome = biomePositions[0] - flatPosition;
+        float distance = directionToTargetBiome.magnitude;
+        closestDistance = distance;
+        
+        for (int i = 1; i < biomePositions.Count; i++){
+            
+            directionToTargetBiome = biomePositions[i] - flatPosition;
+            distance = directionToTargetBiome.magnitude;
+
+            if (distance < closestDistance)
+            {
+                secondClosestDistance = closestDistance;
+                secondClosestBiome = closestBiome;
+                closestDistance = distance;
+                closestBiome = i;
+            } else if (distance < secondClosestDistance)
+            {
+                secondClosestDistance = distance;
+                secondClosestBiome = i;
+            }
+        }
+        
+        return (closestBiome, secondClosestBiome);
+    }
+...
+```
+
+Secondly, method that calculates arrays of vertex indices for determining triangles of LOD levels of rendered chunks. Arrays are then returned and stored for later access.
+
+Results of project the code is used in:
+
+![map_big](https://github.com/RadekNadzieja/Portfolio/blob/main/map_big.jpg)
+
+![map_big](https://github.com/RadekNadzieja/Portfolio/blob/main/map2.jpg)
