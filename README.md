@@ -228,6 +228,6 @@ Secondly, method that calculates arrays of vertex indices for determining triang
 
 Results of project the code is used in:
 
-![map_big](https://github.com/RadekNadzieja/Portfolio/blob/main/map_big.jpg)
+![map_lod](https://github.com/RadekNadzieja/Portfolio/blob/main/map_lod.jpg)
 
-![map_big](https://github.com/RadekNadzieja/Portfolio/blob/main/map2.jpg)
+![map_voronoi](https://github.com/RadekNadzieja/Portfolio/blob/main/map_voronoi.jpg)
